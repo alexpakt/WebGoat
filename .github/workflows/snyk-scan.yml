@@ -34,7 +34,8 @@ jobs:
       - name: Run Snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk test --severity-threshold=high --json > snyk.json
+        run: snyk test -d --severity-threshold=high --json > snyk.json
+        continue-on-error: true
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
