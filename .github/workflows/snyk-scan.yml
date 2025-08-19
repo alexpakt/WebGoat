@@ -24,9 +24,12 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --severity-threshold=high --sarif-file-output=snyk.sarif
-          
-      - name: Upload SARIF file to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@v2
+          args: --severity-threshold=high
+          json: snyk.json
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        if: always()
         with:
-          sarif_file: snyk.sarif
+          name: snyk findings
+          path: snyk.json
