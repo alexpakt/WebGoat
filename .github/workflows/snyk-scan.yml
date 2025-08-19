@@ -18,17 +18,27 @@ jobs:
           java-version: 23
           architecture: x64
 
-      - name: Snyk Scan
-        uses: snyk/actions@0.4.0
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Build dependencies
+        run: mvn -B dependency:go-offline
+
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Run Snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high
-          json: snyk.json
+        run: snyk test --severity-threshold=high --json > snyk.json
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: snyk findings
+          name: snyk-findings
           path: snyk.json
