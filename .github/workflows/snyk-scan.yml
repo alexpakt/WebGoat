@@ -1,0 +1,29 @@
+name: Snyk Security Scan
+
+on: [push, pull_request]
+
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  
+          
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '23' 
+
+      - name: Snyk Scan
+        uses: snyk/actions/snyk@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --sarif-file-output=snyk.sarif
+          
+      - name: Upload SARIF file to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
