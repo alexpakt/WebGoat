@@ -19,15 +19,13 @@ jobs:
           
       - name: Build with Maven
         run: mvn --no-transfer-progress verify
-
-      - name: Verify JAVA_HOME
-        run: echo $JAVA_HOME
         
       - name: Snyk Scan
         uses: snyk/actions/maven@master
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          JAVA_HOME: ${{ steps.setup-java.outputs.java-home }}
            
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
