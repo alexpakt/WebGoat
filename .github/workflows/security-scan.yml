@@ -57,3 +57,4 @@ jobs:
         with:
           args:
             -Dsonar.projectKey=alexpakt_WebGoat
+            -Dsonar.organization=alexpakt
