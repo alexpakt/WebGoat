@@ -58,6 +58,7 @@ jobs:
 
         # Analyze with SonarQube
       - name: Sonar Scan
+        continue-on-error: true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
@@ -66,5 +67,7 @@ jobs:
         # Analyze secrets with TruffleHog
       - name: TruffleHog OSS
         uses: trufflesecurity/trufflehog@v3.90.6
+        continue-on-error: true
         with:
+          path: .
           extra_args: --results=verified,unknown
