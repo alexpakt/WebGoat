@@ -12,7 +12,7 @@ permissions:
 jobs:
   security-scans:
     permissions:
-      contents: read 
+      contents: read
     runs-on: ubuntu-latest
 
     steps:
