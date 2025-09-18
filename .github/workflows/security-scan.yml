@@ -90,13 +90,7 @@ jobs:
 
         # ZAP Scan
       - name: ZAP Full Scan
-        uses: docker://zaproxy/zap-stable
-        with:
-          args: >
-            zap-full-scan.py
-            -t http://localhost:8080
-            -r zap-report.html
-            -d
+        run: docker run -t ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py -t http://localhost:8080
 
       - name: Stop and remove container
         run: docker rm -f webgoat_container
